@@ -1,4 +1,4 @@
-import * as fs from "fs"
+import { readFileSync, writeFileSync } from "fs"
 
 const dataFile = "./citas.json"
 const encoding = "utf-8"
@@ -11,7 +11,7 @@ const labels = {
 }
 const labelsKeys = Object.keys(labels)
 const addLabels = (el, i) => ({ [labelsKeys[i]]: el })
-const loadPatients = () => JSON.parse(fs.readFileSync(dataFile, encoding))
+const loadPatients = () => JSON.parse(readFileSync(dataFile, encoding))
 
 export const registrar = (patientDataArr) => {
   // Check user did input all values
@@ -26,7 +26,7 @@ export const registrar = (patientDataArr) => {
   const newPatient = Object.assign({}, ...patientDataArr.map(addLabels))
   // Update database (JSON file)
   const allPatientsData = JSON.stringify([...loadPatients(), newPatient], undefined, 2)
-  fs.writeFileSync(dataFile, allPatientsData, encoding)
+  writeFileSync(dataFile, allPatientsData, encoding)
   // Feedback user
   const { nombre, enfermedad } = newPatient
   console.log(`\n*** ÉXITO ***\nSe agregó al paciente ${nombre} ingresado por ${enfermedad} a la base de datos.\n`)
